@@ -87,12 +87,12 @@
    <version>${spring.version}</version>
    <scope>test</scope>
   </dependency>
- <dependency>
-  <groupId>org.glassfish</groupId>
-  <artifactId>javax.el</artifactId>
-  <version>3.0.0</version>
-  <scope>test</scope>
- </dependency>
+  <dependency>
+   <groupId>org.glassfish</groupId>
+   <artifactId>javax.el</artifactId>
+   <version>3.0.0</version>
+   <scope>test</scope>
+  </dependency>
  </dependencies>
  <properties>
   <spring.version>4.1.1.RELEASE</spring.version>
