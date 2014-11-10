@@ -34,6 +34,12 @@ version="3.1">
    <param-value></param-value>
   </init-param>
   <load-on-startup>1</load-on-startup>
+  <multipart-config>
+   <location>/tmp</location>
+   <max-file-size>1000000</max-file-size>
+   <max-request-size>1000000</max-request-size>
+   <file-size-threshold>10000</file-size-threshold>
+  </multipart-config>
  </servlet>
  <servlet-mapping>
   <servlet-name>dispatcher</servlet-name>
