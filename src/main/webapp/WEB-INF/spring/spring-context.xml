@@ -9,6 +9,7 @@ http://www.springframework.org/schema/context/spring-context-4.1.xsd
 http://www.springframework.org/schema/mvc
 http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
  <mvc:annotation-driven validator="validator" />
+ <mvc:resources location="/WEB-INF/resources/css/" mapping="/css/**"/>
  <context:component-scan base-package="com.example.spring">
   <context:exclude-filter type="regex"
    expression="com\.example\.spring\.controller\..*Test" />
