@@ -1,9 +1,8 @@
 package com.example.spring.controller.c017;
 
-import javax.validation.Valid;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +16,7 @@ public class C017Controller {
 	}
 
 	@RequestMapping(value = "/bookRecv", method = RequestMethod.POST)
-	public String bookRecv(@Valid @ModelAttribute C017Model c017Model,
+	public String bookRecv(@Validated @ModelAttribute C017Model c017Model,
 			BindingResult errors) {
 		if (errors.hasErrors()) {
 			return "c017/bookForm";
