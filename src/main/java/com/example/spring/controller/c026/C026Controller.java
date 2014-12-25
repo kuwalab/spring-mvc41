@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class C026Controller {
 	@RequestMapping("/uploadForm")
 	public String uploadForm(Model model) {
-		System.out.println("#########");
 		return "c026/uploadForm";
 	}
 
