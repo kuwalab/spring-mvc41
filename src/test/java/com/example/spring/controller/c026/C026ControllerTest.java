@@ -73,28 +73,4 @@ public class C026ControllerTest {
 		// アップロードされたファイルの削除
 		Files.delete(actualFile);
 	}
-
-	@Test
-	public void uploadRecvのPOSTサイズオーバー() throws Exception {
-		byte[] fileImage = null;
-		Path path = Paths.get("src/test/resources/c026/1M.file");
-		if (Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
-			fileImage = Files.readAllBytes(path);
-		}
-
-		// ローカルのファイル名もエミュレーションできる。
-		String fileName = "画像.png";
-		MockMultipartFile file = new MockMultipartFile("file", fileName, null,
-				fileImage);
-		// アップロードされるファイルのパス
-		Path actualFile = Paths.get(System.getProperty("java.io.tmpdir"),
-				"画像.png");
-
-		mockMvc.perform(
-				fileUpload("/c026/uploadRecv?c026/uploadForm").file(file)
-						.param("test", "testParam")).andExpect(status().isOk())
-				.andExpect(view().name("c026/uploadRecv"))
-				.andExpect(model().attribute("test", is("testParam")))
-				.andExpect(model().attribute("fileName", actualFile));
-	}
 }
