@@ -1,19 +1,31 @@
 package com.example.spring.controller.c028;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
+@RequestMapping("/c028")
 public class C028Controller {
-	@RequestMapping("/c028/requestScope1")
-	public String requestScope1(C028Model c028Model) {
-		c028Model.setName("よくわかるSpring");
-		c028Model.setPrice(2900);
-		return "c028/requestScope1";
+	@RequestMapping("/sessionStart")
+	public String sessionScope1(HttpSession session, WebRequest webRequest) {
+		session.setAttribute("session1", "httpSession");
+		webRequest.setAttribute("session2", "webRequest",
+				WebRequest.SCOPE_SESSION);
+
+		return "c028/sessionScope";
 	}
 
-	@RequestMapping("/c028/requestScope2")
-	public String requestScope2() {
-		return "c028/requestScope2";
+	@RequestMapping("/sessionScope")
+	public String sessionScope2() {
+		return "c028/sessionScope";
+	}
+
+	@RequestMapping("/sessionClear")
+	public String sessionScope3(HttpSession session) {
+		session.invalidate();
+		return "c028/sessionScope";
 	}
 }
