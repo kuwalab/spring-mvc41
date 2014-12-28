@@ -1,30 +1,27 @@
 package com.example.spring.controller.c029;
 
-import javax.servlet.http.HttpSession;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.context.request.WebRequest;
 
 @Controller
+@RequestMapping("/c029")
 public class C029Controller {
-	@RequestMapping("/c029/sessionScope1")
-	public String sessionScope1(HttpSession session, WebRequest webRequest) {
-		session.setAttribute("session1", "httpSession");
-		webRequest.setAttribute("session2", "webRequest",
-				WebRequest.SCOPE_SESSION);
+	@Autowired
+	private C029Model c029Model;
 
+	@RequestMapping("/sessionStart")
+	public String sessionStart(Model model) {
+		c029Model.setName("よくわかるHttpSession");
+		c029Model.setPrice(980);
+		model.addAttribute("c029Model", c029Model);
 		return "c029/sessionScope";
 	}
 
-	@RequestMapping("/c029/sessionScope2")
-	public String sessionScope2() {
-		return "c029/sessionScope";
-	}
-
-	@RequestMapping("/c029/sessionScope3")
-	public String sessionScope3(HttpSession session) {
-		session.invalidate();
+	@RequestMapping("/sessionScope")
+	public String sessionScope(Model model) {
+		model.addAttribute("c029Model", c029Model);
 		return "c029/sessionScope";
 	}
 }

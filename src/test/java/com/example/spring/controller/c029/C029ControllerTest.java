@@ -6,8 +6,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
-import java.util.UUID;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +15,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.ModelAndView;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -25,39 +25,42 @@ import org.springframework.web.context.WebApplicationContext;
 public class C029ControllerTest {
 	@Autowired
 	private WebApplicationContext wac;
+	@Autowired
+	private MockHttpSession mockHttpSession;
 
 	private MockMvc mockMvc;
-	private MockHttpSession mockHttpSession;
 
 	@Before
 	public void setup() {
 		mockMvc = webAppContextSetup(wac).build();
-		mockHttpSession = new MockHttpSession(wac.getServletContext(), UUID
-				.randomUUID().toString());
 	}
 
 	@Test
-	public void requestScopeのGET() throws Exception {
-		assertThat(mockHttpSession.getAttribute("session1"), is(nullValue()));
-		assertThat(mockHttpSession.getAttribute("session2"), is(nullValue()));
-
-		mockMvc.perform(get("/c029/sessionScope1").session(mockHttpSession))
+	public void sessionStartのGET() throws Exception {
+		MvcResult mvcResult = mockMvc
+				.perform(get("/c029/sessionStart").session(mockHttpSession))
 				.andExpect(status().isOk())
-				.andExpect(view().name("c029/sessionScope"));
-		assertThat(mockHttpSession.getAttribute("session1"), is("httpSession"));
-		assertThat(mockHttpSession.getAttribute("session2"), is("webRequest"));
+				.andExpect(view().name("c029/sessionScope"))
+				.andExpect(model().attributeExists("c029Model")).andReturn();
+		checkC029Model(mvcResult);
 
-		// セッションは維持される
-		mockMvc.perform(get("/c029/sessionScope2").session(mockHttpSession))
-				.andExpect(view().name("c029/sessionScope"));
+		mvcResult = mockMvc
+				.perform(get("/c029/sessionScope").session(mockHttpSession))
+				.andExpect(status().isOk())
+				.andExpect(view().name("c029/sessionScope"))
+				.andExpect(model().attributeExists("c029Model")).andReturn();
+		checkC029Model(mvcResult);
+	}
 
-		assertThat(mockHttpSession.getAttribute("session1"), is("httpSession"));
-		assertThat(mockHttpSession.getAttribute("session2"), is("webRequest"));
+	private void checkC029Model(MvcResult mvcResult) {
+		// モデルデータの確認
+		ModelAndView mav = mvcResult.getModelAndView();
+		Object c029ModelObject = mav.getModel().get("c029Model");
+		assertThat(c029ModelObject, is(notNullValue()));
+		assertThat(c029ModelObject, is(instanceOf(C029Model.class)));
 
-		// セッションは破棄される
-		mockMvc.perform(get("/c029/sessionScope3").session(mockHttpSession))
-				.andExpect(view().name("c029/sessionScope"));
-
-		assertThat(mockHttpSession.isInvalid(), is(true));
+		C029Model c029Model = (C029Model) c029ModelObject;
+		assertThat(c029Model.getName(), is("よくわかるHttpSession"));
+		assertThat(c029Model.getPrice(), is(980));
 	}
 }

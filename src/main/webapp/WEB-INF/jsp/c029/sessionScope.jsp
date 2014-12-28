@@ -6,9 +6,8 @@
   <title>サンプル</title>
  </head>
  <body>
-HttpSession: <c:out value="${sessionScope.session1}" /><br>
-WebRequest: <c:out value="${sessionScope.session2}" /><br>
-<a href="sessionScope2">セッションをクリアせず再表示</a><br>
-<a href="sessionScope3">セッションをクリアして再表示</a>
+書名: <c:out value="${c029Model.name}" /><br>
+価格: <c:out value="${c029Model.price}" /><br>
+<a href="sessionScope">画面遷移</a>
  </body>
 </html>
