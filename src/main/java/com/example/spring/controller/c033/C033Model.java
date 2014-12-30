@@ -6,7 +6,6 @@ public class C033Model {
 	private Integer listPrice;
 
 	public C033Model(String name, Integer price, Integer listPrice) {
-		super();
 		this.name = name;
 		this.price = price;
 		this.listPrice = listPrice;
